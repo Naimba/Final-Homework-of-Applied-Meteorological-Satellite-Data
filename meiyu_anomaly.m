@@ -79,7 +79,7 @@ function plot_anomaly_percentage(lon,lat,preci_anomaly_percentage,levels,cm,ax,t
 [X,Y] = meshgrid(lon,lat);
 axes(ax);
 m_proj('Equidistant Cylindrical','lon',[88.75 126.25],'lat',[20 45]);hold on
-m_grid('box','on','tickdir','out','xtick',90:10:125,'ytick',20:5:45, ...
+m_grid('box','on','tickdir','out','xtick',90:5:125,'ytick',20:5:45, ...
     'linestyle','none','Fontsize',12);
 mycontourf(X,Y,preci_anomaly_percentage',levels,cm,'m');
 % m_contourf(X,Y,z_anom',levels,'Linestyle','none');
@@ -112,7 +112,7 @@ m_plot(nineLinesx,nineLinesy,'color',[.2 .2 .2],'linewidth',1.2,'linestyle','-')
 
 
 % m_gshhs('lb5','line','color','k','linewidth',1.2,'linestyle','-'); % 国界线
-m_coast('line','linewidth',1,'linestyle','-','color','k');% 海岸线
+% m_coast('line','linewidth',1,'linestyle','-','color','k');% 海岸线
 % m_gshhs_i('line','linewidth',1,'linestyle','-','color','k');% 海岸线
 
 % 画梅雨区域

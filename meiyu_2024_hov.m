@@ -15,7 +15,7 @@ clc;close all
 fig = figure('Position',[50,50,900,500]);
 ax = axes;
 cm = [255 255 255;166 242 142; 61 185 61;97 184 255;0 0 254;250 0 250;129 0 64]/255;
-levels = [0,2,10,25,50,100,250,300];
+levels = [0,0.5,10,25,50,100,250,300];
 titlename = '(a) Precipitation Hovmöller 110—122.5°E';
 
 plot_precip_hov(lat,t,preci_2024,ax,cm,levels,titlename)
@@ -66,8 +66,7 @@ for i = 1:numel(ytick)
     end
 end
 yticklabels(ytl);
-ax.YTickLabelMode = "auto";
-ylabel('Precipitation/ (mm day^{-1})')
+xlabel('Time');ylabel('Lat');
 
 title(titlename,'FontSize',15,'Position',[ax.XLim(1) ax.YLim(2) 1],'HorizontalAlignment','left','FontWeight','bold')
 box on
@@ -88,5 +87,6 @@ ax.FontSize = 15;
 ax.FontWeight = "bold";
 ax.XMinorTick = "on";
 ax.XAxis.MinorTickValues = tn;
+ax.YMinorTick = "on";
 ax.XMinorGrid = "on";
 end
