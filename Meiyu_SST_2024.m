@@ -38,7 +38,7 @@ sst_a = mean(sst_a,3);
 [X,Y] = meshgrid(lon,lat);
 axes(ax);
 m_proj('Equidistant Cylindrical','lon',[45 350],'lat',[-35 60]);hold on
-m_grid('box','on','tickdir','out','xtick',60:30:360,'ytick',-35:15:60, ...
+m_grid('box','on','tickdir','out','xtick',60:30:360,'ytick',[-35,-30:15:60], ...
     'linestyle','none','Fontsize',12);
 mycontourf(X,Y,sst_a',levels,cm,'m');
 % m_contourf(X,Y,z_anom',levels,'Linestyle','none');
@@ -115,7 +115,7 @@ box on
 end
 %% SST Wind Hov
 % clear;clc;close all
-range = [50 100 -30 30];
+range = [80 120 -30 30];
 % 读取2023~2024梅雨期SST数据
 fn = 'F:\Data\NOAA OI SST V2 High Resolution Dataset\sst.mon.mean.nc';
 start_time = datetime(2023,7,1);end_time = datetime(2024,8,1);
@@ -150,7 +150,7 @@ ax = ha1(3);
 levels = [-1.2:0.2:-0.2,0.2:0.2:1.2];
 plevel = 850;
 
-titlename = '(c) SSTa & 850Wind 50—100°E Hovmöller';
+titlename = ['(c) SSTa & 850Wind ',num2str(range(1),'%d'),'—',num2str(range(2),'%d'),'°E Hovmöller'];
 plot_sst_wind_hov(lat,t,sst_ltm,u,v,u_ltm,v_ltm,p,plevel,lat_uv,sst,ax,cm,levels,titlename)
 cax = mycolorbar(levels,cm,'v','<>',[ax.Position(3)+ax.Position(1)+0.01 ax.Position(2) ...
     0.015 ax.Position(4)]);
@@ -159,12 +159,12 @@ cax.FontSize = 12;cax.Title.String = '°C';
 exportgraphics(fig,'图/Meiyu_SSTa.png','Resolution',700)
 %% 辅助函数：SST Wind Hov绘图
 function plot_sst_wind_hov(lat,t,sst_ltm,u,v,u_ltm,v_ltm,p,plevel,lat_uv,sst,ax,cm,levels,titlename)
-sst_a = sst - sst_ltm*1.01;
+sst_a = sst - sst_ltm;
 % dy = 2;
 sst_a = mean(sst_a,1,'omitmissing');sst_a = squeeze(sst_a);
-u_a = u - u_ltm*1.01;u_a = mean(u_a,1,'omitmissing');u_a = u_a(:,:,p==plevel,:);u_a = squeeze(u_a);
+u_a = u - u_ltm;u_a = mean(u_a,1,'omitmissing');u_a = u_a(:,:,p==plevel,:);u_a = squeeze(u_a);
 % u_a = u_a(1:dy:end,:);
-v_a = v - v_ltm*1.01;v_a = mean(v_a,1,'omitmissing');v_a = v_a(:,:,p==plevel,:);v_a = squeeze(v_a);
+v_a = v - v_ltm;v_a = mean(v_a,1,'omitmissing');v_a = v_a(:,:,p==plevel,:);v_a = squeeze(v_a);
 % v_a = v_a(1:dy:end,:);
 % lat_uv = lat_uv(1:dy:end);
 tn = 1:numel(t);
@@ -187,7 +187,7 @@ for i = 1:numel(ytick)
     if ytick(i) > 0
         ytl{i} = [num2str(ytick(i),'%d'),'°N'];
     elseif ytick(i) < 0
-        ytl{i} = [num2str(ytick(i),'%d'),'°S'];
+        ytl{i} = [num2str(-ytick(i),'%d'),'°S'];
     elseif ytick(i) == 0
         ytl{i} = [num2str(ytick(i),'%d'),'°'];
     end

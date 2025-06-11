@@ -136,12 +136,8 @@ ChinaL = shaperead('中国各级行政区边界（shp格式）\行政边界_省�
 bou2_4lx = [ChinaL(:).X];
 bou2_4ly = [ChinaL(:).Y];
 % clear ChinaP ChinaL
-m_plot(bou2_4lx,bou2_4ly,'color',[.2 .2 .2],'linewidth',1.2,'linestyle','-.');%绘制中国省界
+m_plot(bou2_4lx,bou2_4ly,'color',[.2 .2 .2],'linewidth',1.2,'linestyle','-');%绘制中国省界
 
-world_adm0_Project = shaperead('中国地理要素shp完整版\World\world_adm0_Project.shp');
-world_adm0_Projectx = [world_adm0_Project(:).X];
-world_adm0_Projecty = [world_adm0_Project(:).Y];
-m_plot(world_adm0_Projectx,world_adm0_Projecty,'color',[.2 .2 .2],'linewidth',1.2,'linestyle','-');%绘制国界线
 
 nineLines = shaperead('中国地理要素shp完整版\SouthSea\九段线.shp');
 nineLinesx = [nineLines(:).X];
@@ -149,7 +145,7 @@ nineLinesy = [nineLines(:).Y];
 m_plot(nineLinesx,nineLinesy,'color',[.2 .2 .2],'linewidth',1.2,'linestyle','-');%绘制南海九段线
 
 
-% m_gshhs('lb1','line','color','k','linewidth',1.2,'linestyle','-'); % 国界线
+% m_gshhs('lb5','line','color','k','linewidth',1.2,'linestyle','-'); % 国界线
 % m_coast('line','linewidth',1,'linestyle','-','color','k');% 海岸线
 % m_gshhs_i('line','linewidth',1,'linestyle','-','color','k');% 海岸线
 

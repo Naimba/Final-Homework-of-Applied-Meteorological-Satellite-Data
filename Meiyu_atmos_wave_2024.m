@@ -133,9 +133,19 @@ end
 %% SST Atalantic
 clear;clc;close all
 range = [0 360 -40 70];
-% 读取2024梅雨期SST数据
+
+cm = othercolor('RdYlBu10',14);cm = flip(cm,1);
+% cm = [cm(1:6,:);[1 1 1];cm(end-5:end,:)];
+fig = figure('Position',[50 50 1350 1200]);
+[ha,~] = tight_subplot(3,1,[.05 .04],[.05 .05],[.04 .07]);
+
+% ax = axes('Position',[0.05 0.08 0.85 0.8]);
+levels = -2.1:0.3:2.1;
+
+
+% 读取SST数据
 fn = 'F:\Data\NOAA OI SST V2 High Resolution Dataset\sst.mon.mean.nc';
-start_time = datetime(2023,12,1);end_time = datetime(2024,2,1);
+start_time = datetime(2023,9,1);end_time = datetime(2024,5,1);
 [sst,lon,lat,t] = readncfile_SST_mon(fn,'sst',start_time,end_time,range);
 sst(abs(sst)>1e5) = nan;
 
@@ -148,24 +158,31 @@ fn = 'F:\Data\NOAA OI SST V2 High Resolution Dataset\sst.mon.ltm.1991-2020.nc';
 start_time = datetime(0000,12,30);end_time = datetime(0001,11,29);
 [sst_ltm,~,~,~] = readncfile_SST_mon(fn,'sst',start_time,end_time,range);
 sst_ltm(abs(sst_ltm)>1e5) = nan;
-sst_ltm = sst_ltm(:,:,[12,1,2]);
+% sst_ltm = sst_ltm(:,:,[12,1,2]);
 
 fn = 'F:\Data\NCEP1\hgt.mon.ltm.1991-2020.nc';
 [hgt_ltm,~,~,~,~] = readncfile_Wind_mon(fn,'hgt',start_time,end_time,range);
-hgt_ltm = hgt_ltm(:,:,:,[12,1,2]);
+% hgt_ltm = hgt_ltm(:,:,:,[12,1,2]);
 
-cm = othercolor('RdYlBu10',14);cm = flip(cm,1);
-% cm = [cm(1:6,:);[1 1 1];cm(end-5:end,:)];
-fig = figure('Position',[50 50 1400 400]);
-ax = axes('Position',[0.05 0.08 0.85 0.8]);
-levels = -2.1:0.3:2.1;
-titlename = '(a) SSTa & HGTa 200 hPa D^0J^1F^1 2023';
 
-plot_sst_ano(lon,lat,hgt,hgt_ltm,p,300,lon_uv,lat_uv,sst,sst_ltm,ax,levels,cm,titlename)
-cax = mycolorbar(levels,cm,'v','<>',[ax.Position(1)+ax.Position(3)+0.01 ax.Position(2) ...
-    0.015 ax.Position(4)]);
-cax.FontSize = 12;cax.Title.String = '°C';
-exportgraphics(fig,'图\SSTa_HGTa2023DJF.png','Resolution',700)
+ltm_range = [9,10,11;12,1,2;3,4,5];
+titlename = {'(a) SSTa & HGTa 200 hPa SON 2023','(b) SSTa & HGTa 200 hPa D^0J^1F^1 2023','(c) SSTa & HGTa 200 hPa MAM 2024'};
+for i = 1:3
+    % break
+    ax = ha(i);
+    sst_i = sst(:,:,3*i-2:3*i);
+    sst_ltm_i = sst_ltm(:,:,ltm_range(i,:));
+    hgt_i = hgt(:,:,:,3*i-2:3*i);
+    hgt_ltm_i = hgt_ltm(:,:,:,ltm_range(i,:));
+
+    plot_sst_ano(lon,lat,hgt_i,hgt_ltm_i,p,300,lon_uv,lat_uv,sst_i,sst_ltm_i,ax,levels,cm,titlename{i})
+    cax = mycolorbar(levels,cm,'v','<>',[ax.Position(1)+ax.Position(3)+0.01 ax.Position(2) ...
+        0.015 ax.Position(4)]);
+    cax.FontSize = 14;cax.Title.String = '°C';
+
+end
+exportgraphics(fig,'图\SSTa_HGTa2023_2024.png','Resolution',700)
+exportgraphics(ha(2),'图\SSTa_HGTa2023DJF.png','Resolution',700)
 %% 辅助函数：绘制SST Atalantic异常
 function plot_sst_ano(lon,lat,hgt,hgt_ltm,p,p_level,lon_uv,lat_uv,sst,sst_ltm,ax,levels,cm,titlename)
 sst_a = sst - sst_ltm;
